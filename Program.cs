@@ -364,5 +364,626 @@ namespace Set3
             Console.WriteLine($"Sunt {counter} numere prime mai mici decat numarul {n}");
 
         }
+        /// <summary>
+        /// Sortare selectie. Implementati algoritmul de sortare <Selection Sort>. 
+        /// </summary>
+        static void P12()
+        {
+            Console.WriteLine(instructions[12]);
+            var array = ReadArray();
+            SelectionSort(array);
+            Console.WriteLine($"Vectorul dupa sortare: {String.Join(" ", array)}");
+        }
+
+        private static void SelectionSort(int[] array)
+        {
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                int minIndex = i;
+                for (int j = i + 1; j < array.Length; j++)
+                    if (array[j] < array[minIndex])
+                        minIndex = j;
+                (array[i], array[minIndex]) = (array[minIndex], array[i]);
+            }
+        }
+
+        /// <summary>
+        /// Sortare prin insertie. Implementati algoritmul de sortare <Insertion Sort>.
+        /// </summary>
+        static void P13()
+        {
+            Console.WriteLine(instructions[13]);
+            var array = ReadArray();
+            InsertionSort(array);
+            Console.WriteLine($"Vectorul dupa sortare: {String.Join(" ", array)}");
+        }
+
+        private static void InsertionSort(int[] array)
+        {
+            for (int i = 1; i < array.Length; i++)
+            {
+                int pos = i;
+                int value = array[i];
+                while (i > 0 && value < array[i - 1])
+                    i--;
+                (array[i], array[pos]) = (array[pos], array[i]);
+            }
+        }
+
+        /// <summary>
+        /// Interschimbati elementele unui vector in asa fel incat la final toate valorile egale cu zero sa ajunga la sfarsit. (nu se vor folosi vectori suplimentari - operatia se va realiza inplace cu un algoritm eficient - se va face o singura parcugere a vectorului). 
+        /// </summary>
+        static void P14()
+        {
+            Console.WriteLine(instructions[14]);
+            var array = ReadArray();
+            int left = 0;
+            int right = array.Length - 1;
+
+            while (left < right)
+            {
+                while (array[left] != 0)
+                    left++;
+                while (array[right] == 0)
+                    right--;
+                (array[left], array[right]) = (array[right], array[left]);
+                left++;
+                right--;
+            }
+            Console.WriteLine($"Vectorul dupa interschimbarea ceruta: {String.Join(" ", array)}");
+        }
+
+        /// <summary>
+        /// Modificati un vector prin eliminarea elementelor care se repeta, fara a folosi un alt vector.  
+        /// </summary>
+        static void P15()
+        {
+            Console.WriteLine(instructions[15]);
+            var list = ReadArray().ToList();
+
+            for (int i = 0; i < list.Count - 2; i++)
+                for (int j = i + 1; j < list.Count - 1; j++)
+                    if (list[i] == list[j])
+                        list.RemoveAt(j);
+
+            Console.WriteLine($"Vectorul dupa stergerea dublurilor: {String.Join(" ", list)}");
+        }
+
+        /// <summary>
+        /// Se da un vector de n numere naturale. Determinati cel mai mare divizor comun al elementelor vectorului. 
+        /// </summary>
+        static void P16()
+        {
+            Console.WriteLine(instructions[16]);
+            var array = ReadArray();
+
+            int cmmdc = array[0];
+            for (int i = 1; i < array.Length; i++)
+                cmmdc = GCD(cmmdc, array[i]);
+
+            Console.WriteLine($"{cmmdc} este cmmdc al vectorului {String.Join(" ", array)}");
+        }
+        /// <summary>
+        /// returns the greatest common divisor between two integers
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static int GCD(int a, int b)
+        {
+            while (b > 0)
+            {
+                a = b;
+                b = a % b;
+            }
+            return a;
+        }
+
+        /// <summary>
+        /// Se da un numar n in baza 10 si un numar b. 1 < b < 17. Sa se converteasca si sa se afiseze numarul n in baza b. 
+        /// </summary>
+        static void P17()
+        {
+            Console.WriteLine(instructions[17]);
+            Console.Write("Dati n si b separate printr-un spatiu: ");
+            var line = Console.ReadLine().Split(' ');
+            int n = int.Parse(line[0]);
+            int b = int.Parse(line[1]);
+
+            if (1 < b && b < 37)
+            {
+                string sol = Base10ToBaseB(b, n);
+                Console.WriteLine($"{n} in baza 10 este {sol} in baza {b}");
+            }
+            else
+                Console.WriteLine($"Nu se poate converti {n} in baza {b}");
+        }
+
+        /// <summary>
+        /// converts an integer from base 10 to base b and returns the result
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private static string Base10ToBaseB(int b, int input)
+        {
+            char[] cifre = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+            string sol = "";
+            Stack<char> stack = new Stack<char>();
+            while (input > 0)
+            {
+                stack.Push(cifre[input % b]);
+                input /= b;
+            }
+            foreach (char c in stack)
+                sol += c;
+            return sol;
+        }
+
+        /// <summary>
+        /// Se da un polinom de grad n ai carui coeficienti sunt stocati intr-un vector. Cel mai putin semnificativ coeficient este pe pozitia zero in vector. Se cere valoarea polinomului intr-un punct x. 
+        /// </summary>
+        private static void P18()
+        {
+            Console.WriteLine(instructions[18]);
+            var polinom = ReadArray();
+            Console.WriteLine("Dati x: ");
+            int x = int.Parse(Console.ReadLine());
+
+            long grad = 1;
+            long rezultat = 0;
+            for (int i = 0; i < polinom.Length; i++)
+            {
+                rezultat += polinom[i] * grad;
+                grad *= x;
+            }
+
+            Console.WriteLine($"Polinomul {String.Join(" ", polinom)} are valoarea {rezultat} in punctul {x}");
+        }
+        /// <summary>
+        /// Se da un vector s (vectorul in care se cauta) si un vector p (vectorul care se cauta). Determinati de cate ori apare p in s. De ex. Daca s = [1,2,1,2,1,3,1,2,1] si p = [1,2,1] atunci p apare in s de 3 ori. (Problema este dificila doar daca o rezolvati cu un algoritm liniar). 
+        /// </summary>
+        private static void P19()
+        {
+            Console.WriteLine(instructions[19]);
+            var s = ReadArray("s");
+            var p = ReadArray("p");
+
+            String sequence = String.Join("", s);
+            String key = String.Join("", p);
+
+            int counter = 0;
+            for (int i = 0; i <= sequence.Length - key.Length; i++)
+                if (key.CompareTo(sequence.Substring(i, key.Length)) == 0) // daca p se afla in s incepand de la pozitia i
+                    counter++;
+
+            Console.WriteLine($"Secventa {String.Join(" ", p)} apare de {counter} ori in vectorul {String.Join(" ", s)}");
+        }
+        /// <summary>
+        /// Se dau doua siraguri de margele formate din margele albe si negre, notate s1, respectiv s2. Determinati numarul de suprapuneri (margea cu margea) a unui sirag peste celalalt astfel incat margelele suprapuse au aceeasi culoare. Siragurile de margele se pot roti atunci cand le suprapunem. 
+        /// </summary>       
+        private static void P20()
+        {
+            Console.WriteLine(instructions[20]);
+            //I'm not sure if I understanded this task
+            var s1 = ReadArray("s1").ToList();
+            var s2 = ReadArray("s2").ToList();
+
+            int cntMax = 0, cnt;
+            for (int i = 0; i < Math.Max(s1.Count, s2.Count); i++)
+            {
+                cnt = 0;
+                for (int j = 0; j < s1.Count; j++)
+                    if (s1[j] == s2[j])
+                        cnt++;
+
+                if (cntMax < cnt)
+                    cntMax = cnt;
+
+                if (s1.Count > s2.Count)
+                    RotateToLeft(s1, 1);
+                else
+                    RotateToLeft(s2, 1);
+            }
+
+            Console.WriteLine($"{cntMax} este numarul maxim de suprapuneri de aceeasi culoare a celor doua margele cu posibilitatea rotirilor");
+        }
+        /// <summary>
+        /// Se dau doi vectori. Se cere sa se determine ordinea lor lexicografica (care ar trebui sa apara primul in dictionar). 
+        /// </summary>
+        private static void P21()
+        {
+            Console.WriteLine(instructions[21]);
+            var arr1 = ReadArray("n");
+            var arr2 = ReadArray("m");
+
+            String comp1 = String.Join("", arr1);
+            String comp2 = String.Join("", arr2);
+
+            if (comp1.CompareTo(comp2) == 0)
+                Console.WriteLine("Sirurile sunt egale lexicografic");
+            else
+                if (comp1.CompareTo(comp2) < 0)
+                Console.WriteLine("Primul sir este mai mic lexicografic decat al doilea");
+            else
+                Console.WriteLine("Primul sir este mai mare lexicografic decat al doilea");
+        }
+        /// <summary>
+        /// Se dau doi vectori v1 si v2. Se cere sa determine intersectia, reuniunea, si diferentele v1-v2 si v2 -v1 (implementarea operatiilor cu multimi). Elementele care se repeta vor fi scrise o singura data in rezultat. 
+        /// </summary>
+        private static void P22()
+        {
+            /*
+             * mentiuni: V -> op pt reuniunea a 2 multimi, /\ -> op pt intersectia a 2 multimi 
+             * M1 /\ M2 = M1 + M2 - ( (M1-M2) + (M2-M1) ) (ignorand dublurile rezultate)
+             * M1 V M2 = M1 + M2 - (M1/\M2)
+            */
+            Console.WriteLine(instructions[22]);
+            var arr1 = ReadArray("M1");
+            var arr2 = ReadArray("M2");
+
+            //M1 will be sorted and it won't admit duplicates
+            SortedSet<int> M1 = new SortedSet<int>();
+            foreach (var el in arr1)
+                M1.Add(el);
+
+            //M2 will be sorted and it won't admit duplicates
+            SortedSet<int> M2 = new SortedSet<int>();
+            foreach (var el in arr2)
+                M2.Add(el);
+
+            SortedSet<int> difM1M2 = M1minusM2(M1, M2);
+            SortedSet<int> difM2M1 = M1minusM2(M2, M1);
+            SortedSet<int> intersection = SetsIntersection(M1, M2);
+            SortedSet<int> reunion = SetsReunion(M1, M2);
+
+            Console.WriteLine($"M1: {String.Join(" ", M1)}");
+            Console.WriteLine($"M2: {String.Join(" ", M2)}");
+            Console.WriteLine($"{String.Join(" ", difM1M2)} este diferenta M1-M2");
+            Console.WriteLine($"{String.Join(" ", difM2M1)} este diferenta M2-M1");
+            Console.WriteLine($"{String.Join(" ", intersection)} este intersectia M1 /\\ M1");
+            Console.WriteLine($"{String.Join(" ", reunion)} este reuniunea M1 V M1");
+        }
+        /// <summary>
+        /// returns the reunion between two sets of integers as a set
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns> 
+        private static SortedSet<int> SetsReunion(SortedSet<int> m1, SortedSet<int> m2)
+        {
+            var result = new SortedSet<int>();
+            foreach (var el in m1)
+                result.Add(el);
+            foreach (var el in m2)
+                result.Add(el);
+            return result;
+        }
+        /// <summary>
+        /// returns the intersection between two sets of integers as a set
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns> 
+        private static SortedSet<int> SetsIntersection(SortedSet<int> m1, SortedSet<int> m2)
+        {
+            var result = new SortedSet<int>();
+            foreach (var el in m1)
+                if (m2.Contains(el))
+                    result.Add(el);
+            return result;
+        }
+
+        /// <summary>
+        /// returns the difference between two sets of integers as a set
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns> 
+        private static SortedSet<int> M1minusM2(SortedSet<int> m1, SortedSet<int> m2)
+        {
+            SortedSet<int> sol = new SortedSet<int>();
+            foreach (var el in m1)
+                if (!m2.Contains(el))
+                    sol.Add(el);
+            return sol;
+        }
+
+        /// <summary>
+        /// Aceleasi cerinte ca si la problema anterioara dar de data asta elementele din v1 respectiv v2  sunt in ordine strict crescatoare. 
+        /// </summary>
+        private static void P23()
+        {
+            Console.WriteLine(instructions[23]);
+            P22();
+        }
+        /// <summary>
+        /// Aceleasi cerinte ca si la problema anterioara dar de data asta elementele sunt stocate ca vectori cu valori binare (v[i] este 1 daca i face parte din multime si este 0 in caz contrar).
+        /// </summary>
+        private static void P24()
+        {
+            Console.WriteLine(instructions[24]);
+            var arr1 = ReadArray("M1");
+            var arr2 = ReadArray("M2");
+            //M1 will be sorted and it won't admit duplicates
+            SortedSet<int> M1 = new SortedSet<int>();
+            for (int i = 0; i < arr1.Length; i++)
+                if (arr1[i] != 0)
+                    M1.Add(i);
+
+            //M2 will be sorted and it won't admit duplicates
+            SortedSet<int> M2 = new SortedSet<int>();
+            for (int i = 0; i < arr2.Length; i++)
+                if (arr2[i] != 0)
+                    M2.Add(i);
+
+            SortedSet<int> difM1M2 = M1minusM2(M1, M2);
+            SortedSet<int> difM2M1 = M1minusM2(M2, M1);
+            SortedSet<int> intersection = SetsIntersection(M1, M2);
+            SortedSet<int> reunion = SetsReunion(M1, M2);
+
+            Console.WriteLine($"M1: {String.Join(" ", M1)}");
+            Console.WriteLine($"M2: {String.Join(" ", M2)}");
+            Console.WriteLine($"{String.Join(" ", difM1M2)} este diferenta M1-M2");
+            Console.WriteLine($"{String.Join(" ", difM2M1)} este diferenta M2-M1");
+            Console.WriteLine($"{String.Join(" ", intersection)} este intersectia M1 /\\ M1");
+            Console.WriteLine($"{String.Join(" ", reunion)} este reuniunea M1 V M1");
+        }
+        /// <summary>
+        /// (Interclasare) Se dau doi vector sortati crescator v1 si v2. Construiti un al treilea vector ordonat crescator format din toate elementele din  v1 si v2. Sunt permise elemente duplicate. 
+        /// </summary>
+        private static void P25()
+        {
+            Console.WriteLine(instructions[25]);
+            int[] arr1 = ReadArray("n");
+            int[] arr2 = ReadArray("m");
+            var list = new List<int>();
+
+            Array.Sort(arr1);
+            Array.Sort(arr2);
+
+            int index1 = 0, index2 = 0;
+            while (index1 < arr1.Length && index2 < arr2.Length)
+            {
+                if (arr1[index1] <= arr2[index2])
+                    list.Add(arr1[index1++]);
+                else
+                    list.Add(arr2[index2++]);
+            }
+
+            while (index1 < arr1.Length)
+                list.Add(arr1[index1++]);
+            index1++;
+
+            while (index2 < arr2.Length)
+                list.Add(arr2[index2++]);
+
+            Console.WriteLine($"{String.Join(" ", arr1)} + {String.Join(" ", arr2)} = {String.Join(" ", list)}");
+
+        }
+        /// <summary>
+        /// Se dau doua numere naturale foarte mari (cifrele unui numar foarte mare sunt stocate intr-un vector - fiecare cifra pe cate o pozitie). Se cere sa se determine suma, diferenta si produsul a doua astfel de numere.
+        /// </summary>
+        private static void P26()
+        {
+            Console.WriteLine(instructions[26]);
+
+            var arr1 = ReadArray("n");
+            var arr2 = ReadArray("m");
+            var s1 = String.Join("", arr1);
+            var s2 = String.Join("", arr2);
+            BigInteger nr1 = BigInteger.Parse(s1);
+            BigInteger nr2 = BigInteger.Parse(s2);
+
+            Console.WriteLine($"{nr1}+ \n{nr2} \n={nr1 + nr2}");
+            Console.WriteLine();
+            Console.WriteLine($"{nr1}- \n{nr2} \n={nr1 - nr2}");
+            Console.WriteLine();
+            Console.WriteLine($"{nr1}* \n{nr2} \n={nr1 * nr2}");
+            Console.WriteLine();
+        }
+        /// <summary>
+        ///  Se da un vector si un index in vectorul respectiv. Se cere sa se determine valoarea din vector care va fi pe pozitia index dupa ce vectorul este sortat. 
+        /// </summary>
+        private static void P27()
+        {
+            Console.WriteLine(instructions[27]);
+            var array = ReadArray();
+            Console.Write($"Dati k (o pozitie din vector, 0<=k<={array.Length - 1})");
+            int k = int.Parse(Console.ReadLine());
+
+            Array.Sort(array);
+            Console.WriteLine($"v[{k}] in urma sortarii este {array[k]}: {String.Join(" ", array)}");
+        }
+        /// <summary>
+        /// Quicksort. Sortati un vector folosind metoda QuickSort. 
+        /// </summary>
+        private static void P28()
+        {
+            Console.WriteLine(instructions[28]);
+            var array = ReadArray();
+            QuickSort(array, 0, array.Length - 1);
+            Console.WriteLine($"Vectorul dupa sortare: {String.Join(" ", array)}");
+        }
+
+        private static void QuickSort(int[] array, int left, int right)
+        {
+            if (left < right)
+            {
+                int p = partition(array, left, right);
+                QuickSort(array, left, p - 1);
+                QuickSort(array, p + 1, right);
+            }
+        }
+
+        private static int partition(int[] array, int left, int right)
+        {
+            int pivot = array[right];
+            int i = left - 1;
+            for (int j = left; j < right; j++)
+            {
+                if (array[j] <= pivot)
+                {
+                    i++;
+                    (array[i], array[j]) = (array[j], array[i]);
+                }
+            }
+            i++;
+            (array[i], array[right]) = (array[right], array[i]);
+            return i;
+        }
+
+        /// <summary>
+        /// MergeSort. Sortati un vector folosind metoda MergeSort.
+        /// </summary>
+        private static void P29()
+        {
+            Console.WriteLine(instructions[29]);
+            var array = ReadArray();
+            int[] aux = new int[array.Length];
+            MergeSort(array, aux, 0, array.Length - 1);
+            Console.WriteLine($"Vectorul dupa sortare: {String.Join(" ", array)}");
+        }
+
+        private static void MergeSort(int[] array, int[] aux, int left, int right)
+        {
+            if (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                MergeSort(array, aux, left, mid);
+                MergeSort(array, aux, mid + 1, right);
+
+                int i = left, j = mid + 1, k = 0;
+                while (i <= mid && j <= right)
+                    if (array[i] <= array[j])
+                        aux[k++] = array[i++];
+                    else
+                        aux[k++] = array[j++];
+
+                while (i <= mid)
+                    aux[k++] = array[i++];
+
+                while (j <= right)
+                    aux[k++] = array[j++];
+
+                for (i = left; i <= right; i++)
+                    array[i] = aux[i - left];
+            }
+            else
+                return;
+        }
+
+        /// <summary>
+        /// Sortare bicriteriala. Se dau doi vectori de numere intregi E si W, unde E[i] este un numar iar W[i] este un numar care reprezinta ponderea lui E[i]. Sortati vectorii astfel incat elementele lui E sa fie in in ordine crescatoare iar pentru doua valori egale din E, cea cu pondere mai mare va fi prima. 
+        /// </summary>
+        private static void P30()
+        {
+            Console.WriteLine(instructions[30]);
+            var E = ReadArray();
+            var W = ReadArray();
+            if (E.Length == W.Length)
+            {
+                int[] aux1 = new int[E.Length];
+                int[] aux2 = new int[E.Length];
+                //merge sort is not the best option here due to it's bad space complexity
+                //but I choosed it for it's time complexity O(nlogn) and because I understand how it works
+                MergeSort(E, W, aux1, aux2, 0, E.Length - 1);
+                Console.WriteLine($"Vectorii dupa sortare: \n{String.Join(" ", E)}\n{String.Join(" ", W)}");
+            }
+            else
+                Console.WriteLine("Vectorii trebuie sa aiba aceeasi lungime!");
+        }
+
+        private static void MergeSort(int[] crt1, int[] crt2, int[] aux1, int[] aux2, int left, int right)
+        {
+            if (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                MergeSort(crt1, crt2, aux1, aux2, left, mid);
+                MergeSort(crt1, crt2, aux1, aux2, mid + 1, right);
+
+                int i = left, j = mid + 1, k = 0;
+                while (i <= mid && j <= right)
+                    if (crt1[i] < crt1[j])
+                    {
+                        aux1[k] = crt1[i];
+                        aux2[k++] = crt2[i++];
+                    }
+                    else
+                        if (crt1[i] > crt1[j])
+                    {
+                        aux1[k] = crt1[j];
+                        aux2[k++] = crt2[j++];
+                    }
+                    else
+                    {
+                        if (crt2[i] <= crt2[j])
+                        {
+                            aux1[k] = crt1[i];
+                            aux2[k++] = crt2[i++];
+                        }
+                        else
+                        {
+                            aux1[k] = crt1[j];
+                            aux2[k++] = crt2[j++];
+                        }
+                    }
+
+                while (i <= mid)
+                {
+                    aux1[k] = crt1[i];
+                    aux2[k++] = crt2[i++];
+                }
+
+                while (j <= right)
+                {
+                    aux1[k] = crt1[j];
+                    aux2[k++] = crt2[j++];
+                }
+
+                for (i = left; i <= right; i++)
+                {
+                    crt1[i] = aux1[i - left];
+                    crt2[i] = aux2[i - left];
+                }
+            }
+            else
+                return;
+        }
+
+        /// <summary>
+        /// (Element majoritate). Intr-un vector cu n elemente, un element m este element majoritate daca mai mult de n/2 din valorile vectorului sunt egale cu m (prin urmare, daca un vector are element majoritate acesta este unui singur).  Sa se determine elementul majoritate al unui vector (daca nu exista atunci se va afisa <nu exista>). (incercati sa gasiti o solutie liniara). 
+        /// </summary>
+        private static void P31()
+        {
+            Console.WriteLine(instructions[31]);
+            var array = ReadArray();
+
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            foreach (var el in array)
+            {
+                if (!map.ContainsKey(el))
+                    map.Add(el, 1);
+                else
+                    map[el]++;//frecventa elementelor creste
+            }
+
+            int searchedValue = 0;
+            bool ok = false;
+            foreach (var pair in map)
+            {
+                if (pair.Value > array.Length / 2)
+                {
+                    ok = true;
+                    searchedValue = pair.Key;
+                    break;
+                }
+            }
+
+            if (ok)
+                Console.WriteLine($"{searchedValue} este element majoritar");
+            else
+                Console.WriteLine($"Vectorul {String.Join(" ", array)} nu are element majoritar");
+        }
     }
 }
