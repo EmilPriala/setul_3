@@ -93,7 +93,7 @@ namespace Set3
             {
 
                 case 1: P1(); break;
-              /*  case 2: P2(); break;
+                case 2: P2(); break;
                 case 3: P3(); break;
                 case 4: P4(); break;
                 case 5: P5(); break;
@@ -103,7 +103,7 @@ namespace Set3
                 case 9: P9(); break;
                 case 10: P10(); break;
                 case 11: P11(); break;
-                case 12: P12(); break;
+                /* case 12: P12(); break;
                 case 13: P13(); break;
                 case 14: P14(); break;
                 case 15: P15(); break;
@@ -161,11 +161,208 @@ namespace Set3
         /// <summary>
         /// Calculati suma elementelor unui vector de n numere citite de la tastatura.Rezultatul se va afisa pe ecran.
         /// </summary>
-        private static void P1()
+        static void P1()
         {
             Console.WriteLine(instructions[1]);
             var array = ReadArray();
             Console.WriteLine($"Suma numerelor din vector este {array.Sum()}");
+        }
+        /// <summary>
+        /// Se da un vector cu n elemente si o valoare k. Se cere sa se determine prima pozitie din vector pe care apare k. Daca k nu apare in vector rezultatul va fi -1. 
+        /// </summary>
+        static void P2()
+        {
+            Console.WriteLine(instructions[2]);
+            Console.Write("Dati k:");
+            int k = int.Parse(Console.ReadLine());
+            var array = ReadArray();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == k)
+                {
+                    Console.WriteLine($"Prima pozitie pe care apare {k} in vector este {i}");
+                    return;
+                }
+            }
+            Console.WriteLine($"{k} nu apare in secventa: {String.Join(" ", array)}");
+        }
+        /// <summary>
+        /// Sa se determine pozitiile dintr-un vector pe care apar cel mai mic si cel mai mare element al vectorului. Pentru extra-credit realizati programul efectuand 3n/2 comparatii (in cel mai rau caz).
+        /// </summary>
+        static void P3()
+        {
+            Console.WriteLine(instructions[3]);
+            var array = ReadArray();
+            Console.WriteLine($"Pozitia minimului este {Array.IndexOf(array, array.Min())}, pozitia maximului este {Array.IndexOf(array, array.Max())}");
+        }
+
+        /// <summary>
+        /// Rotire. Se da un vector cu n elemente. Rotiti elementele vectorului cu o pozitie spre stanga. Prin rotire spre stanga primul element devine ultimul, al doilea devine primul etc.
+        /// </summary>
+
+        /// <summary>
+        /// Deteminati printr-o singura parcurgere, cea mai mica si cea mai mare valoare dintr-un vector si de cate ori apar acestea. 
+        /// </summary>
+        static void P4()
+        {
+            Console.WriteLine(instructions[4]);
+            var array = ReadArray();
+            int minVal = int.MaxValue, maxVal = int.MinValue, cntMin = 0, cntMax = 0;
+            foreach (var el in array)
+            {
+                if (el > maxVal)
+                {
+                    maxVal = el;
+                    cntMax = 1;
+                }
+                else if (el == maxVal) cntMax++;
+                if (el < minVal)
+                {
+                    minVal = el;
+                    cntMin = 1;
+                }
+                else if (el == minVal) cntMin++;
+            }
+            Console.WriteLine($"Minimul din vector e {minVal} si apare de {cntMin} ori\nMaximul este {maxVal} si apare de {cntMax} ori");
+        }
+
+        /// <summary>
+        /// Se da un vector cu n elemente, o valoare e si o pozitie din vector k. Se cere sa se insereze valoarea e in vector pe pozitia k. Primul element al vectorului se considera pe pozitia zero.
+        /// </summary>
+        static void P5()
+        {
+            Console.WriteLine(instructions[5]);
+            var list = ReadArray().ToList();
+            Console.Write($"Dati valoarea e pe care doriti sa o inserati si pozitia k unde doriti sa o inserati(0<=k<={list.Count - 1}): ");
+            var inputs = Console.ReadLine().Split(' ');
+            int e = int.Parse(inputs[0]);
+            int k = int.Parse(inputs[1]);
+
+            list.Add(list.Last()); //dubleaza ultimul element din vector
+            for (int i = list.Count - 1; i > k; i--)//muta toate elementele de dupa k cu o pozitie spre dreapta pentru a-i face loc noului element
+                list[i] = list[i - 1];
+            list[k] = e;//insereaza elementul e pe pozitia k
+            Console.WriteLine($"Vectorul dupa inserare: {String.Join(" ", list)}");
+        }
+
+        /// <summary>
+        /// Se da un vector cu n elemente si o pozitie din vector k. Se cere sa se stearga din vector elementul de pe pozitia k. Prin stergerea unui element, toate elementele din dreapta lui se muta cu o pozitie spre stanga. 
+        /// </summary>
+        static void P6()
+        {
+            Console.WriteLine(instructions[6]);
+            var list = ReadArray().ToList();
+            Console.Write($"Dati pozitia k din vector de unde vreti sa stergeti un element(0<=k<={list.Count - 1}): ");
+            int k = int.Parse(Console.ReadLine());
+
+
+            list.RemoveAt(k);
+            Console.WriteLine($"Lista dupa eliminarea elementului de pe poz k: {String.Join(" ", list)}");
+        }
+
+        /// <summary>
+        /// Reverse. Se da un vector nu n elemente. Se cere sa se inverseze ordinea elementelor din vector. Prin inversare se intelege ca primul element devine ultimul, al doilea devine penultimul etc.
+        /// </summary>
+        static void P7()
+        {
+            Console.WriteLine(instructions[7]);
+            var list = ReadArray().ToList();
+            list.Reverse();
+            Console.WriteLine($"Lista inversata: {String.Join(" ", list)}");
+        }
+
+        /// <summary>
+        /// Rotire. Se da un vector cu n elemente. Rotiti elementele vectorului cu o pozitie spre stanga. Prin rotire spre stanga primul element devine ultimul, al doilea devine primul etc.
+        /// </summary>
+        static void P8()
+        {
+            Console.WriteLine(instructions[8]);
+            var list = ReadArray().ToList();
+            RotateToLeft(list, 1);
+            Console.WriteLine($"Lista inversata: {String.Join(" ", list)}");
+        }
+
+        static void RotateToLeft(List<int> list, int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                list.Add(list[0]);
+                list.RemoveAt(0);
+            }
+        }
+        /// <summary>
+        /// Rotire k. Se da un vector cu n elemente. Rotiti elementele vectorului cu k pozitii spre stanga. 
+        /// </summary>
+        static void P9()
+        {
+            Console.WriteLine(instructions[9]);
+            var list = ReadArray().ToList();
+            Console.Write($"Dati k (nr de rotiri la stanga asupra listei)");
+            int k = int.Parse(Console.ReadLine());
+
+            RotateToLeft(list, k);
+            Console.WriteLine($"Lista inversata: {String.Join(" ", list)}");
+        }
+
+        /// <summary>
+        /// Cautare binara. Se da un vector cu n elemente sortat in ordine crescatoare. Se cere sa se determine pozitia unui element dat k. Daca elementul nu se gaseste in vector rezultatul va fi -1.
+        /// </summary>
+        static void P10()
+        {
+            Console.WriteLine(instructions[10]);
+            var array = ReadArray();
+            Console.Write($"Dati k (elementul caruia vreti sa-i aflati pozitia din vector)");
+            int k = int.Parse(Console.ReadLine());
+
+            Array.Sort(array);
+            int poz = BinarySearch(array, k, 0, array.Length - 1);
+
+            if (poz != -1)
+                Console.WriteLine($"{k} se gaseste la pozitia {poz} in vectorul {String.Join(" ", array)}");
+            else
+                Console.WriteLine($"{k} nu se gaseste in vectorul {String.Join(" ", array)}");
+        }
+
+        static int BinarySearch(int[] v, int x, int left, int right)
+        {
+            if (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                if (v[mid] == x)
+                    return mid;
+                else if (v[mid] > x) return BinarySearch(v, x, 0, mid - 1);
+                return BinarySearch(v, x, mid + 1, right);
+            }
+            else
+                return -1;
+        }
+
+        /// <summary>
+        /// Se da un numar natural n. Se cere sa se afiseze toate numerele prime mai mici sau egale cu n (ciurul lui Eratostene).
+        /// </summary>
+        static void P11()
+        {
+            Console.WriteLine(instructions[11]);
+            Console.Write("Dati n:");
+            int n = int.Parse(Console.ReadLine());
+            bool[] ciur = new bool[n + 1];
+
+
+            ciur[0] = ciur[1] = true;
+            for (int i = 2; i * i <= n; i++)
+            {
+                if (!ciur[i])
+                    for (int j = 2; j <= n / i; j++)
+                        ciur[i * j] = true;
+            }
+
+            int counter = 0;
+            for (int i = 2; i <= n; i++)
+                if (!ciur[i])
+                    counter++;
+
+            Console.WriteLine($"Sunt {counter} numere prime mai mici decat numarul {n}");
+
         }
     }
 }
