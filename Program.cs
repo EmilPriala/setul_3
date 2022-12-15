@@ -103,7 +103,7 @@ namespace Set3
                 case 9: P9(); break;
                 case 10: P10(); break;
                 case 11: P11(); break;
-                /* case 12: P12(); break;
+                case 12: P12(); break;
                 case 13: P13(); break;
                 case 14: P14(); break;
                 case 15: P15(); break;
@@ -122,7 +122,7 @@ namespace Set3
                 case 28: P28(); break;
                 case 29: P29(); break;
                 case 30: P30(); break;
-                case 31: P31(); break;*/
+                case 31: P31(); break;
                 default: Console.WriteLine($"Problema cu numarul {n} nu exista :("); break;
 
             }
@@ -523,7 +523,7 @@ namespace Set3
         /// <summary>
         /// Se da un polinom de grad n ai carui coeficienti sunt stocati intr-un vector. Cel mai putin semnificativ coeficient este pe pozitia zero in vector. Se cere valoarea polinomului intr-un punct x. 
         /// </summary>
-        private static void P18()
+        static void P18()
         {
             Console.WriteLine(instructions[18]);
             var polinom = ReadArray();
@@ -543,7 +543,7 @@ namespace Set3
         /// <summary>
         /// Se da un vector s (vectorul in care se cauta) si un vector p (vectorul care se cauta). Determinati de cate ori apare p in s. De ex. Daca s = [1,2,1,2,1,3,1,2,1] si p = [1,2,1] atunci p apare in s de 3 ori. (Problema este dificila doar daca o rezolvati cu un algoritm liniar). 
         /// </summary>
-        private static void P19()
+        static void P19()
         {
             Console.WriteLine(instructions[19]);
             var s = ReadArray("s");
@@ -562,7 +562,7 @@ namespace Set3
         /// <summary>
         /// Se dau doua siraguri de margele formate din margele albe si negre, notate s1, respectiv s2. Determinati numarul de suprapuneri (margea cu margea) a unui sirag peste celalalt astfel incat margelele suprapuse au aceeasi culoare. Siragurile de margele se pot roti atunci cand le suprapunem. 
         /// </summary>       
-        private static void P20()
+        static void P20()
         {
             Console.WriteLine(instructions[20]);
             //I'm not sure if I understanded this task
@@ -591,7 +591,7 @@ namespace Set3
         /// <summary>
         /// Se dau doi vectori. Se cere sa se determine ordinea lor lexicografica (care ar trebui sa apara primul in dictionar). 
         /// </summary>
-        private static void P21()
+        static void P21()
         {
             Console.WriteLine(instructions[21]);
             var arr1 = ReadArray("n");
@@ -611,7 +611,7 @@ namespace Set3
         /// <summary>
         /// Se dau doi vectori v1 si v2. Se cere sa determine intersectia, reuniunea, si diferentele v1-v2 si v2 -v1 (implementarea operatiilor cu multimi). Elementele care se repeta vor fi scrise o singura data in rezultat. 
         /// </summary>
-        private static void P22()
+        static void P22()
         {
             /*
              * mentiuni: V -> op pt reuniunea a 2 multimi, /\ -> op pt intersectia a 2 multimi 
@@ -692,7 +692,7 @@ namespace Set3
         /// <summary>
         /// Aceleasi cerinte ca si la problema anterioara dar de data asta elementele din v1 respectiv v2  sunt in ordine strict crescatoare. 
         /// </summary>
-        private static void P23()
+        static void P23()
         {
             Console.WriteLine(instructions[23]);
             P22();
@@ -700,7 +700,7 @@ namespace Set3
         /// <summary>
         /// Aceleasi cerinte ca si la problema anterioara dar de data asta elementele sunt stocate ca vectori cu valori binare (v[i] este 1 daca i face parte din multime si este 0 in caz contrar).
         /// </summary>
-        private static void P24()
+        static void P24()
         {
             Console.WriteLine(instructions[24]);
             var arr1 = ReadArray("M1");
@@ -732,7 +732,7 @@ namespace Set3
         /// <summary>
         /// (Interclasare) Se dau doi vector sortati crescator v1 si v2. Construiti un al treilea vector ordonat crescator format din toate elementele din  v1 si v2. Sunt permise elemente duplicate. 
         /// </summary>
-        private static void P25()
+        static void P25()
         {
             Console.WriteLine(instructions[25]);
             int[] arr1 = ReadArray("n");
@@ -764,7 +764,7 @@ namespace Set3
         /// <summary>
         /// Se dau doua numere naturale foarte mari (cifrele unui numar foarte mare sunt stocate intr-un vector - fiecare cifra pe cate o pozitie). Se cere sa se determine suma, diferenta si produsul a doua astfel de numere.
         /// </summary>
-        private static void P26()
+        static void P26()
         {
             Console.WriteLine(instructions[26]);
 
@@ -785,7 +785,7 @@ namespace Set3
         /// <summary>
         ///  Se da un vector si un index in vectorul respectiv. Se cere sa se determine valoarea din vector care va fi pe pozitia index dupa ce vectorul este sortat. 
         /// </summary>
-        private static void P27()
+        static void P27()
         {
             Console.WriteLine(instructions[27]);
             var array = ReadArray();
@@ -798,7 +798,7 @@ namespace Set3
         /// <summary>
         /// Quicksort. Sortati un vector folosind metoda QuickSort. 
         /// </summary>
-        private static void P28()
+        static void P28()
         {
             Console.WriteLine(instructions[28]);
             var array = ReadArray();
@@ -836,7 +836,7 @@ namespace Set3
         /// <summary>
         /// MergeSort. Sortati un vector folosind metoda MergeSort.
         /// </summary>
-        private static void P29()
+        static void P29()
         {
             Console.WriteLine(instructions[29]);
             var array = ReadArray();
@@ -876,7 +876,7 @@ namespace Set3
         /// <summary>
         /// Sortare bicriteriala. Se dau doi vectori de numere intregi E si W, unde E[i] este un numar iar W[i] este un numar care reprezinta ponderea lui E[i]. Sortati vectorii astfel incat elementele lui E sa fie in in ordine crescatoare iar pentru doua valori egale din E, cea cu pondere mai mare va fi prima. 
         /// </summary>
-        private static void P30()
+        static void P30()
         {
             Console.WriteLine(instructions[30]);
             var E = ReadArray();
@@ -954,7 +954,7 @@ namespace Set3
         /// <summary>
         /// (Element majoritate). Intr-un vector cu n elemente, un element m este element majoritate daca mai mult de n/2 din valorile vectorului sunt egale cu m (prin urmare, daca un vector are element majoritate acesta este unui singur).  Sa se determine elementul majoritate al unui vector (daca nu exista atunci se va afisa <nu exista>). (incercati sa gasiti o solutie liniara). 
         /// </summary>
-        private static void P31()
+        static void P31()
         {
             Console.WriteLine(instructions[31]);
             var array = ReadArray();
